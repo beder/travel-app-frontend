@@ -9,4 +9,7 @@ export default defineNuxtConfig({
   },
   devtools: { enabled: true },
   modules: ["@nuxtjs/apollo", "@nuxtjs/tailwindcss"],
+  typescript: {
+    typeCheck: true,
+  },
 });
