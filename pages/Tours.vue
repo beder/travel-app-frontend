@@ -1,14 +1,19 @@
 <template>
-  <p>There {{ !!data ? 'is' : 'is no' }} data.</p>
-  <p>There are {{ data?.tours?.length || 0 }} tours.</p>
-  <ul>
-    <li v-for="tour in data?.tours" :key="tour.id">
-      <p>{{ tour.name }}</p>
-      <p>{{ tour.startingDate }}</p>
-      <p>{{ tour.endingDate }}</p>
-      <p>{{ tour.price }}</p>
-    </li>
-  </ul>
+  <div>
+    <p>There {{ !!data ? 'is' : 'is no' }} data.</p>
+    <p>There are {{ data?.tours?.length || 0 }} tours.</p>
+    <ul>
+      <li
+        v-for="tour in data?.tours"
+        :key="tour.id"
+      >
+        <p>{{ tour.name }}</p>
+        <p>{{ tour.startingDate }}</p>
+        <p>{{ tour.endingDate }}</p>
+        <p>{{ tour.price }}</p>
+      </li>
+    </ul>
+  </div>
 </template>
 <script lang="ts" setup>
 const query = gql`
