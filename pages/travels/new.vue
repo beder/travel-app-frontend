@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { FormError } from "#ui/types";
-import { parse } from "vue/compiler-sfc";
 definePageMeta({
   middleware: "auth",
 });
