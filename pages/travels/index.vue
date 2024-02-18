@@ -14,10 +14,17 @@ const { data } = await useAsyncGql("travels", state);
     <ul>
       <li v-for="travel of data?.travels || []" :key="travel.id">
         {{ travel.name }} ({{ travel.description }})
-        <a v-if="travel.tours.length" :href="`/travels/${travel.slug}/tours`">
-          View Tours
-        </a>
-        <span v-else> No tours available </span>
+        <UButton
+          v-if="travel.tours.length"
+          :to="`/travels/${travel.slug}/tours`"
+          target="_self"
+        >
+          Tours
+        </UButton>
+        <span v-else> No tours available</span>
+        <UButton :to="`/travels/${travel.slug}/tours/new`" target="_self">
+          New Tour
+        </UButton>
       </li>
     </ul>
 
