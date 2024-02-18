@@ -41,6 +41,7 @@
         <h2 class="text-xl text-primary font-semibold">Delete Travel</h2>
 
         Are you sure you want to delete this travel?
+
         <div class="flex items-start justify-end space-x-4">
           <UButton color="red" class="px-4" @click="deleteTravel()"
             >Yes</UButton

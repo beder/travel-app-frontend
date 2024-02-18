@@ -134,3 +134,27 @@ query travels($skip: Int, $take: Int) {
     }
   }
 }
+
+mutation updateTour(
+  $id: String!
+  $name: String!
+  $startingDate: Timestamp!
+  $endingDate: Timestamp!
+  $price: Int!
+) {
+  updateTour(
+    updateTourInput: {
+      id: $id
+      name: $name
+      startingDate: $startingDate
+      endingDate: $endingDate
+      price: $price
+    }
+  ) {
+    id
+    name
+    startingDate
+    endingDate
+    price
+  }
+}
