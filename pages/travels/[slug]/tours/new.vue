@@ -120,7 +120,14 @@ async function onSubmit() {
                 input-class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg"
               />
             </UFormGroup>
-            <UButton type="submit">Create</UButton>
+            <div class="flex items-start justify-end space-x-4">
+              <UButton type="submit">Create</UButton>
+              <UButton
+                type="button"
+                @click="navigateTo(`/travels/${travelSlug}/tours`)"
+                >Cancel</UButton
+              >
+            </div>
           </UForm>
         </UCard>
       </div>
