@@ -102,7 +102,7 @@ async function onSubmit() {
     </UButton>
 
     <UModal v-model="state.editingTour" @close="state.editingTour = false">
-      <Card class="p-4 flex flex-col space-y-6">
+      <UCard class="p-4 flex flex-col space-y-6">
         <UForm
           v-if="state.editedTour"
           :validate="validate"
@@ -163,7 +163,7 @@ async function onSubmit() {
             <UButton @click="state.editingTour = false">Cancel</UButton>
           </div>
         </UForm>
-      </Card>
+      </UCard>
     </UModal>
   </div>
 </template>

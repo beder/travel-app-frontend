@@ -77,7 +77,7 @@ const deleteTravel = async () => {
     </div>
 
     <UModal v-model="state.modal" @close="state.modal = false">
-      <Card class="p-4 flex flex-col space-y-6">
+      <UCard class="p-4 flex flex-col space-y-6">
         <h2 class="text-xl text-primary font-semibold">Delete Travel</h2>
 
         Are you sure you want to delete this travel?
@@ -88,7 +88,7 @@ const deleteTravel = async () => {
           >
           <UButton class="px-4" @click="state.modal = false">No</UButton>
         </div>
-      </Card>
+      </UCard>
     </UModal>
   </div>
 </template>
