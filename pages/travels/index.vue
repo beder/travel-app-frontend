@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 const state = reactive({
   pagination: {
-    skip: 0,
-    take: 5,
+    page: 1,
+    pageSize: 5,
   },
   modal: false,
   deletionTargetSlug: "",
@@ -28,39 +28,53 @@ const deleteTravel = async () => {
   <div>
     <h2>Travels</h2>
 
-    <ul>
-      <li v-for="travel of data?.travels || []" :key="travel.id">
-        {{ travel.name }} ({{ travel.description }})
-        <UButton
-          v-if="travel.tours.length"
-          :to="`/travels/${travel.slug}/tours`"
-          target="_self"
-        >
+    <UTable
+      :rows="data?.travels?.items"
+      :columns="[
+        { key: 'name', label: 'Name' },
+        { key: 'slug', label: 'Slug' },
+        { key: 'numberOfDays', label: 'Number of Days' },
+        { key: 'isPublic', label: 'Public' },
+        { key: 'actions' },
+      ]"
+    >
+      <template #actions-data="{ row }">
+        <UButton :to="`/travels/${row.slug}/tours`" target="_self" class="mr-2">
           Tours
         </UButton>
-        <span v-else>No tours available</span>
-        <UButton :to="`/travels/${travel.slug}/tours/new`" target="_self">
-          New Tours
+        <UButton
+          :to="`/travels/${row.slug}/tours/new`"
+          target="_self"
+          class="mr-2"
+        >
+          New Tour
         </UButton>
-        <UButton color="red" @click="confirmDeletion(travel.slug)"
+        <UButton color="red" @click="confirmDeletion(row.slug)"
           >Delete Travel</UButton
         >
-      </li>
-    </ul>
-
-    <button
-      :display="state.pagination.skip === 0"
-      :disabled="state.pagination.skip === 0"
-      @click="state.pagination.skip -= state.pagination.take"
+      </template>
+    </UTable>
+    <div
+      class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700"
     >
-      Previous
-    </button>
-    <button
-      :disabled="data?.travels?.length < state.pagination.take"
-      @click="state.pagination.skip += state.pagination.take"
-    >
-      Next
-    </button>
+      <UButton
+        :display="state.pagination.page === 1"
+        :disabled="state.pagination.page === 1"
+        icon="i-heroicons-chevron-left"
+        color="gray"
+        variant="outline"
+        @click="state.pagination.page -= 1"
+      />
+      <UButton
+        :disabled="
+          data?.travels?.meta?.page === data?.travels?.meta?.totalPages
+        "
+        icon="i-heroicons-chevron-right"
+        color="gray"
+        variant="outline"
+        @click="state.pagination.page += 1"
+      />
+    </div>
 
     <UModal v-model="state.modal" @close="state.modal = false">
       <Card class="p-4 flex flex-col space-y-6">

@@ -98,7 +98,7 @@ async function onSubmit() {
     </UTable>
 
     <UButton :to="`/travels/${travelSlug}/tours/new`" target="_self">
-      New Tour
+      New
     </UButton>
 
     <UModal v-model="state.editingTour" @close="state.editingTour = false">

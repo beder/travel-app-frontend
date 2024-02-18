@@ -110,27 +110,35 @@ query tours(
   }
 }
 
-query travels($skip: Int, $take: Int) {
-  travels(findTravelsInput: { skip: $skip, take: $take }) {
-    id
-    isPublic
-    slug
-    name
-    description
-    numberOfDays
-    moods {
-      nature
-      relax
-      history
-      culture
-      party
+query travels($page: Int, $pageSize: Int) {
+  travels(findTravelsInput: { page: $page, pageSize: $pageSize }) {
+    meta {
+      page
+      pageSize
+      totalPages
+      totalResults
     }
-    tours {
+    items {
       id
+      isPublic
+      slug
       name
-      startingDate
-      endingDate
-      price
+      description
+      numberOfDays
+      moods {
+        nature
+        relax
+        history
+        culture
+        party
+      }
+      tours {
+        id
+        name
+        startingDate
+        endingDate
+        price
+      }
     }
   }
 }
