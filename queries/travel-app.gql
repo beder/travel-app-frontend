@@ -1,3 +1,37 @@
+mutation createTravel(
+  $isPublic: Boolean!
+  $slug: String!
+  $name: String!
+  $description: String!
+  $numberOfDays: Int!
+  $moods: MoodsInput!
+) {
+  createTravel(
+    createTravelInput: {
+      isPublic: $isPublic
+      slug: $slug
+      name: $name
+      description: $description
+      numberOfDays: $numberOfDays
+      moods: $moods
+    }
+  ) {
+    id
+    isPublic
+    slug
+    name
+    description
+    numberOfDays
+    moods {
+      nature
+      relax
+      history
+      culture
+      party
+    }
+  }
+}
+
 mutation login($email: String!, $password: String!) {
   login(input: { email: $email, password: $password }) {
     accessToken
