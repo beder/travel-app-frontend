@@ -1,11 +1,26 @@
 <template>
   <div>
     <h2>Tours</h2>
-
-    <p v-for="(entry, i) of data?.tours" :key="entry.id">
-      {{ i + 1 }}. Tour Name: {{ entry.name }} ({{ entry.startingDate }})
-      <UButton color="primary" @click="editTour(entry)">Edit</UButton>
-    </p>
+    <UTable
+      :rows="data?.tours"
+      :columns="[
+        { key: 'name', label: 'Name' },
+        { key: 'startingDate', label: 'Starting Date' },
+        { key: 'endingDate', label: 'Ending Date' },
+        { key: 'price', label: 'Price' },
+        { key: 'actions' },
+      ]"
+    >
+      <template #actions-data="{ row }">
+        <UButton
+          color="primary"
+          icon="i-heroicons-pencil"
+          @click="editTour(row)"
+        >
+          Edit
+        </UButton>
+      </template>
+    </UTable>
 
     <UModal v-model="state.editingTour" @close="state.editingTour = false">
       <Card class="p-4 flex flex-col space-y-6">
