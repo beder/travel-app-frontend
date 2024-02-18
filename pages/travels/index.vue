@@ -2,9 +2,9 @@
 const state = reactive({
   skip: 0,
   take: 5,
-})
+});
 
-const { data } = await useAsyncGql('travels', state)
+const { data } = await useAsyncGql("travels", state);
 </script>
 
 <template>
@@ -12,20 +12,12 @@ const { data } = await useAsyncGql('travels', state)
     <h2>Travels</h2>
 
     <ul>
-      <li
-        v-for="travel of data?.travels || []"
-        :key="travel.id"
-      >
+      <li v-for="travel of data?.travels || []" :key="travel.id">
         {{ travel.name }} ({{ travel.description }})
-        <a
-          v-if="travel.tours.length"
-          :href="`/travels/${travel.slug}/tours`"
-        >
+        <a v-if="travel.tours.length" :href="`/travels/${travel.slug}/tours`">
           View Tours
         </a>
-        <span v-else>
-          No tours available
-        </span>
+        <span v-else> No tours available </span>
       </li>
     </ul>
 
