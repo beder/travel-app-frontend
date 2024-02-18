@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormError } from "#ui/types";
+
 definePageMeta({
   middleware: "auth",
 });

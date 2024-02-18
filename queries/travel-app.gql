@@ -1,3 +1,27 @@
+mutation createTour(
+  $travelSlug: String!
+  $name: String!
+  $startingDate: Timestamp!
+  $endingDate: Timestamp!
+  $price: Int!
+) {
+  createTour(
+    travelSlug: $travelSlug
+    createTourInput: {
+      name: $name
+      startingDate: $startingDate
+      endingDate: $endingDate
+      price: $price
+    }
+  ) {
+    id
+    name
+    startingDate
+    endingDate
+    price
+  }
+}
+
 mutation createTravel(
   $isPublic: Boolean!
   $slug: String!
