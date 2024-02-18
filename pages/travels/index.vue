@@ -17,6 +17,15 @@ const { data } = await useAsyncGql('travels', state)
         :key="travel.id"
       >
         {{ travel.name }} ({{ travel.description }})
+        <a
+          v-if="travel.tours.length"
+          :href="`/travels/${travel.slug}/tours`"
+        >
+          View Tours
+        </a>
+        <span v-else>
+          No tours available
+        </span>
       </li>
     </ul>
 
