@@ -1,3 +1,78 @@
+<script lang="ts" setup>
+import type { FormError } from "#ui/types";
+
+import type { ToursQuery } from "#gql";
+
+const state = reactive({
+  editingTour: false,
+  editedTour: null as ToursQuery["tours"][0] | null,
+});
+const route = useRoute();
+const travelSlug = ref(route.params.slug) as Ref<string>;
+const { data, refresh } = await useAsyncGql(
+  "tours",
+  { travelSlug },
+  {
+    transform: (data) => ({
+      ...data,
+      tours: data.tours.map((t) => ({
+        ...t,
+        startingDate: new Date(t.startingDate).toISOString().split("T")[0],
+        endingDate: new Date(t.endingDate).toISOString().split("T")[0],
+        price: t.price / 100,
+      })),
+    }),
+  },
+);
+
+const editTour = (tour: ToursQuery["tours"][0]) => {
+  state.editingTour = true;
+  state.editedTour = { ...tour };
+};
+
+const validate = (state: any): FormError[] => {
+  const errors = [];
+
+  if (!state.editedTour.name)
+    errors.push({ path: "name", message: "Required" });
+  if (!state.editedTour.startingDate)
+    errors.push({ path: "startingDate", message: "Required" });
+  if (!state.editedTour.endingDate)
+    errors.push({ path: "endingDate", message: "Required" });
+  if (!state.editedTour.price)
+    errors.push({ path: "price", message: "Required" });
+  if (state.editedTour.price < 0)
+    errors.push({ path: "price", message: "Must be at least 0" });
+  if (
+    state.editedTour.startingDate &&
+    state.editedTour.endingDate &&
+    state.editedTour.startingDate > state.editedTour.endingDate
+  )
+    errors.push({
+      path: "startingDate",
+      message: "Must be before ending date",
+    });
+
+  return errors;
+};
+
+async function onSubmit() {
+  if (!state.editedTour) return;
+
+  const { data } = await useAsyncGql("updateTour", {
+    ...state.editedTour,
+    price: state.editedTour.price * 100,
+  });
+
+  if (data?.value?.updateTour?.id) {
+    state.editingTour = false;
+    state.editedTour = null;
+
+    refresh();
+  }
+}
+</script>
+
 <template>
   <div>
     <h2>Tours</h2>
@@ -92,78 +167,3 @@
     </UModal>
   </div>
 </template>
-
-<script lang="ts" setup>
-import type { FormError } from "#ui/types";
-
-import type { ToursQuery } from "#gql";
-
-const state = reactive({
-  editingTour: false,
-  editedTour: null as ToursQuery["tours"][0] | null,
-});
-const route = useRoute();
-const travelSlug = ref(route.params.slug) as Ref<string>;
-const { data, refresh } = await useAsyncGql(
-  "tours",
-  { travelSlug },
-  {
-    transform: (data) => ({
-      ...data,
-      tours: data.tours.map((t) => ({
-        ...t,
-        startingDate: new Date(t.startingDate).toISOString().split("T")[0],
-        endingDate: new Date(t.endingDate).toISOString().split("T")[0],
-        price: t.price / 100,
-      })),
-    }),
-  },
-);
-
-const editTour = (tour: ToursQuery["tours"][0]) => {
-  state.editingTour = true;
-  state.editedTour = { ...tour };
-};
-
-const validate = (state: any): FormError[] => {
-  const errors = [];
-
-  if (!state.editedTour.name)
-    errors.push({ path: "name", message: "Required" });
-  if (!state.editedTour.startingDate)
-    errors.push({ path: "startingDate", message: "Required" });
-  if (!state.editedTour.endingDate)
-    errors.push({ path: "endingDate", message: "Required" });
-  if (!state.editedTour.price)
-    errors.push({ path: "price", message: "Required" });
-  if (state.editedTour.price < 0)
-    errors.push({ path: "price", message: "Must be at least 0" });
-  if (
-    state.editedTour.startingDate &&
-    state.editedTour.endingDate &&
-    state.editedTour.startingDate > state.editedTour.endingDate
-  )
-    errors.push({
-      path: "startingDate",
-      message: "Must be before ending date",
-    });
-
-  return errors;
-};
-
-async function onSubmit() {
-  if (!state.editedTour) return;
-
-  const { data } = await useAsyncGql("updateTour", {
-    ...state.editedTour,
-    price: state.editedTour.price * 100,
-  });
-
-  if (data?.value?.updateTour?.id) {
-    state.editingTour = false;
-    state.editedTour = null;
-
-    refresh();
-  }
-}
-</script>
