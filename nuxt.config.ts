@@ -1,14 +1,24 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  apollo: {
-    clients: {
-      default: {
-        httpEndpoint: "http://localhost:4000/graphql",
+  devtools: { enabled: true },
+  modules: ["@nuxt/ui", "nuxt-graphql-client"],
+  "graphql-client": {
+    tokenStorage: {
+      name: "__session",
+      mode: "cookie", // default
+      cookieOptions: {
+        path: "/",
+        secure: false, // defaults to `process.env.NODE_ENV === 'production'`
+        httpOnly: false, // Only accessible via HTTP(S)
+        maxAge: 60 * 60 * 24 * 5, // 5 days
       },
     },
   },
-  devtools: { enabled: true },
-  modules: ["@nuxtjs/apollo", "@nuxtjs/tailwindcss"],
+  runtimeConfig: {
+    public: {
+      GQL_HOST: "http://localhost:4000/graphql", // process.env.GQL_HOST
+    },
+  },
   typescript: {
     typeCheck: true,
   },
