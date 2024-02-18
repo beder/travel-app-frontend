@@ -1,54 +1,3 @@
-<script setup lang="ts">
-import type { FormError } from "#ui/types";
-
-definePageMeta({
-  middleware: "auth",
-});
-
-const state = reactive({
-  isPublic: true,
-  slug: "",
-  name: "",
-  description: "",
-  numberOfDays: 1,
-  moods: {
-    culture: 5,
-    history: 5,
-    nature: 5,
-    party: 5,
-    relax: 5,
-  },
-});
-
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!state.slug) errors.push({ path: "slug", message: "Required" });
-  if (!state.name) errors.push({ path: "name", message: "Required" });
-  if (!state.description)
-    errors.push({ path: "description", message: "Required" });
-  if (!state.numberOfDays)
-    errors.push({ path: "numberOfDays", message: "Required" });
-  if (state.numberOfDays < 1)
-    errors.push({ path: "numberOfDays", message: "Must be at least 1" });
-  if (state.numberOfDays && parseInt(state.numberOfDays) !== state.numberOfDays)
-    errors.push({ path: "numberOfDays", message: "Must be an integer" });
-  ["culture", "history", "nature", "party", "relax"].forEach((mood) => {
-    if (state.moods[mood] < 0)
-      errors.push({ path: `moods.${mood}`, message: "Must be at least 0" });
-  });
-
-  return errors;
-};
-
-async function onSubmit() {
-  const { data } = await useAsyncGql("createTravel", state);
-
-  if (data?.value?.createTravel?.id) {
-    navigateTo("/");
-  }
-}
-</script>
-
 <template>
   <div class="min-h-screen flex items-center justify-center">
     <section class="relative py-6 sm:py-10 w-full">
@@ -159,3 +108,54 @@ async function onSubmit() {
     </section>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { FormError } from "#ui/types";
+
+definePageMeta({
+  middleware: "auth",
+});
+
+const state = reactive({
+  isPublic: true,
+  slug: "",
+  name: "",
+  description: "",
+  numberOfDays: 1,
+  moods: {
+    culture: 5,
+    history: 5,
+    nature: 5,
+    party: 5,
+    relax: 5,
+  },
+});
+
+const validate = (state: any): FormError[] => {
+  const errors = [];
+  if (!state.slug) errors.push({ path: "slug", message: "Required" });
+  if (!state.name) errors.push({ path: "name", message: "Required" });
+  if (!state.description)
+    errors.push({ path: "description", message: "Required" });
+  if (!state.numberOfDays)
+    errors.push({ path: "numberOfDays", message: "Required" });
+  if (state.numberOfDays < 1)
+    errors.push({ path: "numberOfDays", message: "Must be at least 1" });
+  if (state.numberOfDays && parseInt(state.numberOfDays) !== state.numberOfDays)
+    errors.push({ path: "numberOfDays", message: "Must be an integer" });
+  ["culture", "history", "nature", "party", "relax"].forEach((mood) => {
+    if (state.moods[mood] < 0)
+      errors.push({ path: `moods.${mood}`, message: "Must be at least 0" });
+  });
+
+  return errors;
+};
+
+async function onSubmit() {
+  const { data } = await useAsyncGql("createTravel", state);
+
+  if (data?.value?.createTravel?.id) {
+    navigateTo("/");
+  }
+}
+</script>

@@ -1,36 +1,3 @@
-<script setup lang="ts">
-import type { FormError } from "#ui/types";
-
-const state = reactive({
-  error: "",
-  email: "",
-  password: "",
-});
-
-const validate = (state: any): FormError[] => {
-  const errors = [];
-  if (!state.email) errors.push({ path: "email", message: "Required" });
-  if (!state.password) errors.push({ path: "password", message: "Required" });
-  return errors;
-};
-
-async function onSubmit() {
-  console.log({ email: state.email, password: state.password });
-
-  const { data } = await useAsyncGql("login", state);
-
-  if (data?.value?.login?.accessToken) {
-    const session = useCookie<string>("_session");
-
-    session.value = data.value.login.accessToken;
-
-    navigateTo("/");
-  } else {
-    state.error = "Invalid credentials";
-  }
-}
-</script>
-
 <template>
   <div class="min-h-screen flex items-center justify-center">
     <section class="relative py-6 sm:py-10">
@@ -119,3 +86,36 @@ async function onSubmit() {
     </section>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { FormError } from "#ui/types";
+
+const state = reactive({
+  error: "",
+  email: "",
+  password: "",
+});
+
+const validate = (state: any): FormError[] => {
+  const errors = [];
+  if (!state.email) errors.push({ path: "email", message: "Required" });
+  if (!state.password) errors.push({ path: "password", message: "Required" });
+  return errors;
+};
+
+async function onSubmit() {
+  console.log({ email: state.email, password: state.password });
+
+  const { data } = await useAsyncGql("login", state);
+
+  if (data?.value?.login?.accessToken) {
+    const session = useCookie<string>("_session");
+
+    session.value = data.value.login.accessToken;
+
+    navigateTo("/");
+  } else {
+    state.error = "Invalid credentials";
+  }
+}
+</script>

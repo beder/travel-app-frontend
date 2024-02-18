@@ -1,29 +1,3 @@
-<script lang="ts" setup>
-const state = reactive({
-  pagination: {
-    skip: 0,
-    take: 5,
-  },
-  modal: false,
-  deletionTargetSlug: "",
-});
-
-const { data, refresh } = await useAsyncGql("travels", state.pagination);
-
-const confirmDeletion = async (slug: string) => {
-  state.modal = true;
-  state.deletionTargetSlug = slug;
-};
-
-const deleteTravel = async () => {
-  state.modal = false;
-
-  await useAsyncGql("deleteTravel", { slug: state.deletionTargetSlug });
-
-  refresh();
-};
-</script>
-
 <template>
   <div>
     <h2>Travels</h2>
@@ -77,3 +51,29 @@ const deleteTravel = async () => {
     </UModal>
   </div>
 </template>
+
+<script lang="ts" setup>
+const state = reactive({
+  pagination: {
+    skip: 0,
+    take: 5,
+  },
+  modal: false,
+  deletionTargetSlug: "",
+});
+
+const { data, refresh } = await useAsyncGql("travels", state.pagination);
+
+const confirmDeletion = async (slug: string) => {
+  state.modal = true;
+  state.deletionTargetSlug = slug;
+};
+
+const deleteTravel = async () => {
+  state.modal = false;
+
+  await useAsyncGql("deleteTravel", { slug: state.deletionTargetSlug });
+
+  refresh();
+};
+</script>

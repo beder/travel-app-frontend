@@ -1,57 +1,3 @@
-<script setup lang="ts">
-import type { FormError } from "#ui/types";
-
-definePageMeta({
-  middleware: "auth",
-});
-
-const route = useRoute();
-const travelSlug = ref(route.params.slug) as Ref<string>;
-
-const state = reactive({
-  name: "",
-  startingDate: new Date().toISOString().split("T")[0],
-  endingDate: new Date().toISOString().split("T")[0],
-  price: 0,
-  travelSlug: travelSlug.value,
-});
-
-const validate = (state: any): FormError[] => {
-  const errors = [];
-
-  if (!state.name) errors.push({ path: "name", message: "Required" });
-  if (!state.startingDate)
-    errors.push({ path: "startingDate", message: "Required" });
-  if (!state.endingDate)
-    errors.push({ path: "endingDate", message: "Required" });
-  if (!state.price) errors.push({ path: "price", message: "Required" });
-  if (state.price < 0)
-    errors.push({ path: "price", message: "Must be at least 0" });
-  if (
-    state.startingDate &&
-    state.endingDate &&
-    state.startingDate > state.endingDate
-  )
-    errors.push({
-      path: "startingDate",
-      message: "Must be before ending date",
-    });
-
-  return errors;
-};
-
-async function onSubmit() {
-  const { data } = await useAsyncGql("createTour", {
-    ...state,
-    price: state.price * 100,
-  });
-
-  if (data?.value?.createTour?.id) {
-    navigateTo(`/travels/${travelSlug.value}/tours`);
-  }
-}
-</script>
-
 <template>
   <div class="min-h-screen flex items-center justify-center">
     <section class="relative py-6 sm:py-10 w-full">
@@ -127,3 +73,57 @@ async function onSubmit() {
     </section>
   </div>
 </template>
+
+<script setup lang="ts">
+import type { FormError } from "#ui/types";
+
+definePageMeta({
+  middleware: "auth",
+});
+
+const route = useRoute();
+const travelSlug = ref(route.params.slug) as Ref<string>;
+
+const state = reactive({
+  name: "",
+  startingDate: new Date().toISOString().split("T")[0],
+  endingDate: new Date().toISOString().split("T")[0],
+  price: 0,
+  travelSlug: travelSlug.value,
+});
+
+const validate = (state: any): FormError[] => {
+  const errors = [];
+
+  if (!state.name) errors.push({ path: "name", message: "Required" });
+  if (!state.startingDate)
+    errors.push({ path: "startingDate", message: "Required" });
+  if (!state.endingDate)
+    errors.push({ path: "endingDate", message: "Required" });
+  if (!state.price) errors.push({ path: "price", message: "Required" });
+  if (state.price < 0)
+    errors.push({ path: "price", message: "Must be at least 0" });
+  if (
+    state.startingDate &&
+    state.endingDate &&
+    state.startingDate > state.endingDate
+  )
+    errors.push({
+      path: "startingDate",
+      message: "Must be before ending date",
+    });
+
+  return errors;
+};
+
+async function onSubmit() {
+  const { data } = await useAsyncGql("createTour", {
+    ...state,
+    price: state.price * 100,
+  });
+
+  if (data?.value?.createTour?.id) {
+    navigateTo(`/travels/${travelSlug.value}/tours`);
+  }
+}
+</script>
