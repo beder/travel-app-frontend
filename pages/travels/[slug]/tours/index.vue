@@ -22,6 +22,10 @@
       </template>
     </UTable>
 
+    <UButton :to="`/travels/${travelSlug}/tours/new`" target="_self">
+      New Tour
+    </UButton>
+
     <UModal v-model="state.editingTour" @close="state.editingTour = false">
       <Card class="p-4 flex flex-col space-y-6">
         <UForm
