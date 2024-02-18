@@ -111,7 +111,7 @@ async function onSubmit() {
           @submit="onSubmit"
         >
           <h3 class="text-xl font-medium text-gray-900 dark:text-white p-0">
-            Update Tour
+            Edit Tour
           </h3>
           <UFormGroup
             label="Name"
