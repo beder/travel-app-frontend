@@ -53,14 +53,14 @@ const { currentUser, logout } = await useCurrentUser();
         <!--<SearchBar>-->
         <div class="flex items-center">
           <div class="md:ml-4 md:flex md:items-center">
-            <div v-if="state.currentUser">
-              <span class="block text-sm">{{ state.currentUser?.email }}</span>
+            <div v-if="currentUser">
+              <span class="block text-sm">{{ currentUser?.email }}</span>
               <span class="block truncate text-sm font-medium">{{
-                state.currentUser?.roles?.[0]?.name
+                currentUser?.roles?.[0]?.name
               }}</span>
             </div>
             <div
-              v-if="state.currentUser"
+              v-if="currentUser"
               id="avatar-menu"
               class="relative flex justify-center items-center rounded-full w-10 h-10 bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 ml-4"
               tabindex="0"
@@ -71,7 +71,7 @@ const { currentUser, logout } = await useCurrentUser();
               ></div>
             </div>
             <UButton
-              v-if="state.currentUser"
+              v-if="currentUser"
               color="primary"
               class="ml-4"
               @click="logout"
