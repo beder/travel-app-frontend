@@ -8,12 +8,28 @@ const { isAdmin, isEditor } = await useCurrentUser();
 const state = reactive({
   editingTour: false,
   editedTour: null as ToursQuery["tours"][0] | null,
+  priceFrom: undefined as number | undefined,
+  priceTo: undefined as number | undefined,
+  startingDate: undefined as string | undefined,
+  endingDate: undefined as string | undefined,
 });
+
+const priceFrom = ref(undefined) as Ref<number | undefined>;
+const priceTo = ref(undefined) as Ref<number | undefined>;
+const startingDate = ref(undefined) as Ref<number | undefined>;
+const endingDate = ref(undefined) as Ref<number | undefined>;
+
 const route = useRoute();
 const travelSlug = ref(route.params.slug) as Ref<string>;
 const { data, refresh } = await useAsyncGql(
   "tours",
-  { travelSlug },
+  {
+    travelSlug,
+    priceFrom,
+    priceTo,
+    startingDate,
+    endingDate,
+  },
   {
     transform: (data) => ({
       ...data,
@@ -73,11 +89,76 @@ async function onSubmit() {
     refresh();
   }
 }
+
+async function onSearch() {
+  priceFrom.value = state.priceFrom ? state.priceFrom * 100 : undefined;
+  priceTo.value = state.priceTo ? state.priceTo * 100 : undefined;
+  startingDate.value = state.startingDate?.length
+    ? new Date(state.startingDate).valueOf()
+    : undefined;
+  endingDate.value = state.endingDate?.length
+    ? new Date(state.endingDate).valueOf()
+    : undefined;
+}
+
+function onClearSearch() {
+  state.priceFrom = undefined;
+  state.priceTo = undefined;
+  state.startingDate = undefined;
+  state.endingDate = undefined;
+
+  priceFrom.value = undefined;
+  priceTo.value = undefined;
+  startingDate.value = undefined;
+  endingDate.value = undefined;
+}
 </script>
 
 <template>
   <div>
     <h2>Tours</h2>
+    <div
+      class="flex flex-row px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 space-x-4"
+    >
+      <UFormGroup label="Price from">
+        <UInput
+          v-model="state.priceFrom"
+          icon="i-heroicons-currency-euro"
+          type="number"
+          step="0.01"
+          input-class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg ps-9"
+        />
+      </UFormGroup>
+      <UFormGroup label="Price to">
+        <UInput
+          v-model="state.priceTo"
+          icon="i-heroicons-currency-euro"
+          type="number"
+          step="0.01"
+          input-class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg ps-9"
+        />
+      </UFormGroup>
+      <UFormGroup label="Starting Date">
+        <UInput
+          v-model="state.startingDate"
+          icon="i-heroicons-calendar"
+          type="date"
+          input-class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg ps-9"
+        />
+      </UFormGroup>
+      <UFormGroup label="Ending Date">
+        <UInput
+          v-model="state.endingDate"
+          icon="i-heroicons-calendar"
+          type="date"
+          input-class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg ps-9"
+        />
+      </UFormGroup>
+      <div class="flex space-x-4 justify-center items-end">
+        <UButton @click="onSearch">Search</UButton>
+        <UButton @click="onClearSearch">Clear</UButton>
+      </div>
+    </div>
     <UTable
       :rows="data?.tours"
       :columns="[
