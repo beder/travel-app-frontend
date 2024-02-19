@@ -7,7 +7,7 @@ This repository contains the frontend application for the Travel App, which cons
 - [Features](#features)
 - [Setup](#setup)
 - [Development Server](#development-server)
-- [Backend Repository](#backed-repository)
+- [Backend Repository](#backend-repository)
 
 ## Features
 
