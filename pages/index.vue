@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { currentUser } = await useCurrentUser();
+const { isAdmin } = await useCurrentUser();
 
 const state = reactive({
   pagination: {
@@ -48,13 +48,14 @@ const deleteTravel = async () => {
           Tours
         </UButton>
         <UButton
+          v-if="isAdmin"
           :to="`/travels/${row.slug}/tours/new`"
           target="_self"
           class="mr-2"
         >
           New Tour
         </UButton>
-        <UButton color="red" @click="confirmDeletion(row.slug)"
+        <UButton v-if="isAdmin" color="red" @click="confirmDeletion(row.slug)"
           >Delete Travel</UButton
         >
       </template>
@@ -82,7 +83,7 @@ const deleteTravel = async () => {
       />
     </div>
 
-    <UButton :to="`/travels/new`" target="_self"> New </UButton>
+    <UButton v-if="isAdmin" :to="`/travels/new`" target="_self"> New </UButton>
 
     <UModal v-model="state.modal" @close="state.modal = false">
       <UCard class="p-4 flex flex-col space-y-6">
