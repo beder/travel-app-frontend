@@ -11,7 +11,7 @@ export const useCurrentUser = async () => {
   );
   const isEditor = ref<boolean>(
     data?.value?.me?.roles?.some((role) =>
-      [" admin", "editor"].includes(role.name),
+      ["admin", "editor"].includes(role.name),
     ) || false,
   );
 
