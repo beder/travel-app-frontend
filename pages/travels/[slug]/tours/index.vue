@@ -37,7 +37,7 @@ const { data, refresh } = await useAsyncGql(
         ...t,
         startingDate: new Date(t.startingDate).toISOString().split("T")[0],
         endingDate: new Date(t.endingDate).toISOString().split("T")[0],
-        price: t.price / 100,
+        price: (t.price / 100).toFixed(2),
       })),
     }),
   },
