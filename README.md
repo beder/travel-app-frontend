@@ -1,23 +1,44 @@
-# Nuxt 3 Minimal Starter
+# Travel App Frontend
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This repository contains the frontend application for the Travel App, which consumes the GraphQL API provided by the backend server.
+
+## Table of Contents
+
+- [Features](#features)
+- [Setup](#setup)
+- [Development Server](#development-server)
+- [Backend Repository](#backed-repository)
+
+## Features
+
+- View a list of travels and tours
+- User authentication and login
+- Explore travel details and itineraries
 
 ## Setup
 
-Make sure to install the dependencies:
+1. Clone this repository to your local machine
 
 ```bash
-# npm
+git clone git@github.com:beder/travel-app-frontend.git
+```
+
+2. Navigate to the project directory
+
+```bash
+cd travel-app-frontend
+```
+
+3. Copy the `.env.example` file in the root directory to create the `.env` file
+
+```bash
+cp .env.example .env
+```
+
+4. Install the dependencies:
+
+```bash
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
 ## Development Server
@@ -25,51 +46,9 @@ bun install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+## Backend Repository
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+The backend server for the Travel App is hosted in a separate repository. You can find it [here](https://github.com/beder/travel-app-backend).
