@@ -1,59 +1,77 @@
 <template>
   <div>
-    <header
-      class="backdrop-blur border-b border-gray-200 dark:border-gray-800 -mb-px sticky top-0 z-50 lg:!border-transparent bg-gray-50 dark:bg-gray-950"
+    <nav
+      class="text-gray-700 dark:text-gray-200 divide-gray-100 dark:divide-gray-700 sm:px-4 w-full bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50"
     >
       <div
-        class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex items-center justify-between gap-3 h-[--header-height]"
+        class="mx-auto flex flex-wrap justify-between items-center container"
       >
-        <div class="lg:flex-1 flex items-center gap-1.5">
-          <a
-            aria-current="page"
-            href="/"
-            class="router-link-active router-link-exact-active flex-shrink-0 font-bold text-xl text-gray-900 dark:text-white flex items-end gap-1.5"
-            aria-label="Logo"
-          >
-            Travel App
-          </a>
-        </div>
-
-        <ul
-          class="items-center ring-1 ring-gray-200 dark:ring-gray-800 px-3 gap-x-0 rounded-full hidden lg:flex"
-        >
-          <li class="relative">
-            <a
-              class="text-sm/6 flex items-center gap-1 py-2 px-4 font-medium transition-colors relative after:absolute after:-bottom-px after:inset-x-2 after:h-px after:rounded-full after:opacity-0 after:bg-gray-900 dark:after:bg-white after:transition-opacity text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              href="/travels"
-              >Travels</a
-            >
-          </li>
-        </ul>
-
-        <div class="flex items-center justify-end lg:flex-1 gap-1.5">
-          <UButton
-            to="/login"
+        <a href="/" class="flex items-center">Travel App</a>
+        <div class="flex w-1/2">
+          <button
             type="button"
-            class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 px-3 py-2 text-gray-900 dark:text-white hover:bg-white dark:hover:bg-gray-900 focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 items-center hidden lg:flex"
+            data-collapse-toggle="mobile-menu-3"
+            aria-controls="mobile-menu-3"
+            aria-expanded="false"
+            class="text-center font-medium focus-within:ring-4 focus-within:outline-none inline-flex items-center justify-center md:hidden text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 me-1"
           >
-            <span class="">Sign in</span
-            ><span
-              class="i-heroicons-arrow-right-20-solid flex-shrink-0 h-5 w-5"
-              aria-hidden="true"
-            ></span></UButton
-          ><button
-            type="button"
-            class="focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0 font-medium rounded-full text-sm gap-x-2 p-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800 focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-primary-500 dark:focus-visible:ring-primary-400 inline-flex items-center lg:hidden"
-            aria-label="Open Menu"
-          >
-            <span
-              class="i-heroicons-bars-3 flex-shrink-0 h-5 w-5"
-              aria-hidden="true"
-            ></span>
+            <div class="shrink-0 w-5 h-5 i-heroicons-magnifying-glass" />
           </button>
+          <div class="hidden relative md:block md:w-full">
+            <div
+              class="flex absolute inset-y-0 start-0 items-center ps-3 pointer-events-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                class="shrink-0 w-4 h-4"
+                role="img"
+                aria-label="search outline"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                ></path>
+              </svg>
+            </div>
+            <input
+              id="search-navbar"
+              class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-500 text-sm rounded-lg ps-10"
+              placeholder="Search..."
+              type="text"
+            />
+          </div>
         </div>
+        <!--<SearchBar>-->
+        <div class="flex items-center">
+          <div class="md:ml-4 md:flex md:items-center">
+            <div>
+              <span class="block text-sm">admin@example.com</span>
+              <span class="block truncate text-sm font-medium">admin</span>
+            </div>
+            <div
+              id="avatar-menu"
+              class="relative flex justify-center items-center rounded-full w-10 h-10 bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 ml-4"
+              tabindex="0"
+            >
+              <div class="rounded-full i-heroicons-user-circle w-8 h-8"></div>
+              <div
+                class="flex-shrink-0 rounded-full border-2 border-white dark:border-gray-800 w-3.5 h-3.5 bg-green-500 absolute bottom-0 end-0"
+              ></div>
+            </div>
+            <UButton color="primary" class="ml-4" to="/login" target="_self">
+              Sign in
+            </UButton>
+          </div>
+        </div>
+        <!--<UserMenuDropdown>-->
       </div>
-    </header>
-    <main class="p-4 h-auto pt-20">
+    </nav>
+    <main class="p-4 h-auto">
       <slot />
     </main>
   </div>

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { FormError } from "#ui/types";
 
+definePageMeta({
+  layout: false,
+});
+
 const state = reactive({
   error: "",
   email: "",
