@@ -1,27 +1,100 @@
-<script setup lang="ts">
-definePageMeta({
-  middleware: "auth",
+<script lang="ts" setup>
+const state = reactive({
+  pagination: {
+    page: 1,
+    pageSize: 5,
+  },
+  modal: false,
+  deletionTargetSlug: "",
 });
+
+const { data, refresh } = await useAsyncGql(
+  "publishedTravels",
+  state.pagination,
+);
+
+const confirmDeletion = async (slug: string) => {
+  state.modal = true;
+  state.deletionTargetSlug = slug;
+};
+
+const deleteTravel = async () => {
+  state.modal = false;
+
+  await useAsyncGql("deleteTravel", { slug: state.deletionTargetSlug });
+
+  refresh();
+};
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-screen bg-gray-50">
-    <div>
-      <h1 class="mb-6 text-4xl">Travel App</h1>
-      <div
-        class="w-auto mb-4 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-      >
-        <a
-          href="/"
-          class="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
-          >Home</a
+  <div>
+    <h2>Travels</h2>
+
+    <UTable
+      :rows="data?.publishedTravels?.items"
+      :columns="[
+        { key: 'name', label: 'Name' },
+        { key: 'slug', label: 'Slug' },
+        { key: 'numberOfDays', label: 'Number of Days' },
+        { key: 'isPublic', label: 'Public' },
+        { key: 'actions' },
+      ]"
+    >
+      <template #actions-data="{ row }">
+        <UButton :to="`/travels/${row.slug}/tours`" target="_self" class="mr-2">
+          Tours
+        </UButton>
+        <UButton
+          :to="`/travels/${row.slug}/tours/new`"
+          target="_self"
+          class="mr-2"
         >
-        <a
-          href="/travels"
-          class="block w-full px-4 py-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white"
-          >Travels</a
+          New Tour
+        </UButton>
+        <UButton color="red" @click="confirmDeletion(row.slug)"
+          >Delete Travel</UButton
         >
-      </div>
+      </template>
+    </UTable>
+    <div
+      class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700"
+    >
+      <UButton
+        :display="state.pagination.page === 1"
+        :disabled="state.pagination.page === 1"
+        icon="i-heroicons-chevron-left"
+        color="gray"
+        variant="outline"
+        @click="state.pagination.page -= 1"
+      />
+      <UButton
+        :disabled="
+          data?.publishedTravels?.meta?.page ===
+          data?.publishedTravels?.meta?.totalPages
+        "
+        icon="i-heroicons-chevron-right"
+        color="gray"
+        variant="outline"
+        @click="state.pagination.page += 1"
+      />
     </div>
+
+    <UButton :to="`/travels/new`" target="_self"> New </UButton>
+
+    <UModal v-model="state.modal" @close="state.modal = false">
+      <UCard class="p-4 flex flex-col space-y-6">
+        <h2 class="text-xl text-primary font-semibold">Delete Travel</h2>
+
+        Are you sure you want to delete this travel?
+
+        <div class="flex items-start justify-end space-x-4">
+          <UButton color="red" class="px-4" @click="deleteTravel()"
+            >Yes</UButton
+          >
+          <UButton class="px-4" @click="state.modal = false">No</UButton>
+        </div>
+      </UCard>
+    </UModal>
   </div>
 </template>

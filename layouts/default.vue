@@ -71,7 +71,7 @@
         <!--<UserMenuDropdown>-->
       </div>
     </nav>
-    <main class="p-4 h-auto">
+    <main class="p-4 h-auto pt-20">
       <slot />
     </main>
   </div>
