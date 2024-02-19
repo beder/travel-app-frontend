@@ -3,6 +3,8 @@ import type { FormError } from "#ui/types";
 
 import type { ToursQuery } from "#gql";
 
+const { isAdmin, isEditor } = await useCurrentUser();
+
 const state = reactive({
   editingTour: false,
   editedTour: null as ToursQuery["tours"][0] | null,
@@ -88,6 +90,7 @@ async function onSubmit() {
     >
       <template #actions-data="{ row }">
         <UButton
+          v-if="isEditor"
           color="primary"
           icon="i-heroicons-pencil"
           @click="editTour(row)"
@@ -97,7 +100,11 @@ async function onSubmit() {
       </template>
     </UTable>
 
-    <UButton :to="`/travels/${travelSlug}/tours/new`" target="_self">
+    <UButton
+      v-if="isAdmin"
+      :to="`/travels/${travelSlug}/tours/new`"
+      target="_self"
+    >
       New
     </UButton>
 
