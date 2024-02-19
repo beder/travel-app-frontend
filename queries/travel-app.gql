@@ -80,6 +80,39 @@ mutation login($email: String!, $password: String!) {
   }
 }
 
+query publishedTravels($page: Int, $pageSize: Int) {
+  publishedTravels(findTravelsInput: { page: $page, pageSize: $pageSize }) {
+    meta {
+      page
+      pageSize
+      totalPages
+      totalResults
+    }
+    items {
+      id
+      isPublic
+      slug
+      name
+      description
+      numberOfDays
+      moods {
+        nature
+        relax
+        history
+        culture
+        party
+      }
+      tours {
+        id
+        name
+        startingDate
+        endingDate
+        price
+      }
+    }
+  }
+}
+
 query tours(
   $travelSlug: String!
   $priceFrom: Int

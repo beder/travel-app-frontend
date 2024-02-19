@@ -8,7 +8,10 @@ const state = reactive({
   deletionTargetSlug: "",
 });
 
-const { data, refresh } = await useAsyncGql("travels", state.pagination);
+const { data, refresh } = await useAsyncGql(
+  "publishedTravels",
+  state.pagination,
+);
 
 const confirmDeletion = async (slug: string) => {
   state.modal = true;
@@ -29,7 +32,7 @@ const deleteTravel = async () => {
     <h2>Travels</h2>
 
     <UTable
-      :rows="data?.travels?.items"
+      :rows="data?.publishedTravels?.items"
       :columns="[
         { key: 'name', label: 'Name' },
         { key: 'slug', label: 'Slug' },
@@ -67,7 +70,8 @@ const deleteTravel = async () => {
       />
       <UButton
         :disabled="
-          data?.travels?.meta?.page === data?.travels?.meta?.totalPages
+          data?.publishedTravels?.meta?.page ===
+          data?.publishedTravels?.meta?.totalPages
         "
         icon="i-heroicons-chevron-right"
         color="gray"
