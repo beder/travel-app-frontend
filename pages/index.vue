@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+const { currentUser } = await useCurrentUser();
+
 const state = reactive({
   pagination: {
     page: 1,

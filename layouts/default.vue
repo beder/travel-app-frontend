@@ -1,17 +1,5 @@
 <script setup lang="ts">
-const currentUser = await useCurrentUser();
-
-const state = reactive({
-  currentUser,
-});
-
-const logout = async () => {
-  const session = useCookie<string>("_session");
-
-  session.value = "";
-
-  state.currentUser = null;
-};
+const { currentUser, logout } = await useCurrentUser();
 </script>
 
 <template>
