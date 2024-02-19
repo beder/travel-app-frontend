@@ -3,6 +3,14 @@ import type { FormError } from "#ui/types";
 
 import type { ToursQuery } from "#gql";
 
+const columns = [
+  { key: "name", label: "Name" },
+  { key: "startingDate", label: "Starting Date" },
+  { key: "endingDate", label: "Ending Date" },
+  { key: "price", label: "Price", sortable: true },
+  { key: "actions" },
+];
+
 const { isAdmin, isEditor } = await useCurrentUser();
 
 const state = reactive({
@@ -18,6 +26,7 @@ const priceFrom = ref(undefined) as Ref<number | undefined>;
 const priceTo = ref(undefined) as Ref<number | undefined>;
 const startingDate = ref(undefined) as Ref<number | undefined>;
 const endingDate = ref(undefined) as Ref<number | undefined>;
+const priceSortOrder = ref(undefined) as Ref<"asc" | "desc" | undefined>;
 
 const route = useRoute();
 const travelSlug = ref(route.params.slug) as Ref<string>;
@@ -29,6 +38,7 @@ const { data, refresh } = await useAsyncGql(
     priceTo,
     startingDate,
     endingDate,
+    priceSortOrder,
   },
   {
     transform: (data) => ({
@@ -161,13 +171,9 @@ function onClearSearch() {
     </div>
     <UTable
       :rows="data?.tours"
-      :columns="[
-        { key: 'name', label: 'Name' },
-        { key: 'startingDate', label: 'Starting Date' },
-        { key: 'endingDate', label: 'Ending Date' },
-        { key: 'price', label: 'Price' },
-        { key: 'actions' },
-      ]"
+      :columns="columns"
+      sort-mode="manual"
+      @update:sort="priceSortOrder = $event.direction"
     >
       <template #actions-data="{ row }">
         <UButton
