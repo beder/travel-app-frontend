@@ -19,8 +19,6 @@ const validate = (state: any): FormError[] => {
 };
 
 async function onSubmit() {
-  console.log({ email: state.email, password: state.password });
-
   const { data } = await useAsyncGql("login", state);
 
   if (data?.value?.login?.accessToken) {
