@@ -1,3 +1,19 @@
+<script setup lang="ts">
+const currentUser = await useCurrentUser();
+
+const state = reactive({
+  currentUser,
+});
+
+const logout = async () => {
+  const session = useCookie<string>("_session");
+
+  session.value = "";
+
+  state.currentUser = null;
+};
+</script>
+
 <template>
   <div>
     <nav
@@ -49,11 +65,14 @@
         <!--<SearchBar>-->
         <div class="flex items-center">
           <div class="md:ml-4 md:flex md:items-center">
-            <div>
-              <span class="block text-sm">admin@example.com</span>
-              <span class="block truncate text-sm font-medium">admin</span>
+            <div v-if="state.currentUser">
+              <span class="block text-sm">{{ state.currentUser?.email }}</span>
+              <span class="block truncate text-sm font-medium">{{
+                state.currentUser?.roles?.[0]?.name
+              }}</span>
             </div>
             <div
+              v-if="state.currentUser"
               id="avatar-menu"
               class="relative flex justify-center items-center rounded-full w-10 h-10 bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 ml-4"
               tabindex="0"
@@ -63,7 +82,21 @@
                 class="flex-shrink-0 rounded-full border-2 border-white dark:border-gray-800 w-3.5 h-3.5 bg-green-500 absolute bottom-0 end-0"
               ></div>
             </div>
-            <UButton color="primary" class="ml-4" to="/login" target="_self">
+            <UButton
+              v-if="state.currentUser"
+              color="primary"
+              class="ml-4"
+              @click="logout"
+            >
+              Sign out
+            </UButton>
+            <UButton
+              v-else
+              color="primary"
+              class="ml-4"
+              to="/login"
+              target="_self"
+            >
               Sign in
             </UButton>
           </div>

@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui", "nuxt-graphql-client"],
   "graphql-client": {
     tokenStorage: {
-      name: "__session",
+      name: "_session",
       mode: "cookie", // default
       cookieOptions: {
         path: "/",
